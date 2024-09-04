@@ -9,9 +9,18 @@ import SwiftUI
 
 @main
 struct MyMapWithRepresentableApp: App {
+    @StateObject var locationSearchViewModel = LocationSearchViewModel()
+    @StateObject private var locationManager = LocationManager()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if locationManager.isAuthorized {
+                MapView()
+                    .environmentObject(locationManager)
+                    .environmentObject(locationSearchViewModel)
+            } else {
+                LocationDeniedView()
+            }
         }
     }
 }
